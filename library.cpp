@@ -26,11 +26,8 @@ public:
     Figurs() {
     }
     int get_number_figure() {
-//        srand(time(NULL));
-//        rand()%7;
-//        return rand() % 7;
-    random_device rd;   // non-deterministic generator
-    mt19937 gen(rd());  // to seed mersenne twister.
+    random_device rd;
+    mt19937 gen(rd());
     uniform_int_distribution<> dist(0,6);
     return dist(gen);
     }
@@ -49,24 +46,13 @@ class tetris {
 protected:
     vector<std::vector<int>> matrix;
     vector<std::vector<int>> matrix_of_figure_x;
-    vector<std::vector<int>> matrix_of_figure_y;
-    int center[2];//0-x,1-y;
+    int center[2];
 
     bool flag_finish_game=0;
     bool flag_restart=0;
-    bool flag_cur_matrix = 0;//0-y,1-x
     bool flag_finish = 0;
     bool flag_need_new_figure = 0;
-private:
-    void transp() {
-        matrix_of_figure_y=vector<vector<int> >(matrix_of_figure_x[0].size(),vector<int>(matrix_of_figure_x.size()));
 
-        for (int i = 0; i < matrix_of_figure_x.size(); i++) {
-            for (int j = 0; j < matrix_of_figure_x[i].size(); j++) {
-                matrix_of_figure_y[j][i] = matrix_of_figure_x[i][j];
-            }
-        }
-    }
 public:
     tetris() {
         matrix = vector<vector<int>>(size_y, vector<int>(size_x, 0));
@@ -115,7 +101,6 @@ public:
             }
             matrix_of_figure_x[x][y] = 1;
         }
-        transp();
         for (int i = 0; i < 4; i++) {
             for (int j = 4; j < 6; j++) {
                 if (matrix_of_figure_x[i][j - 4] == 1) {
@@ -227,17 +212,14 @@ public:
                     if (rotatedX < 0 ){
                         matrix=right();
                         flag_restart=1;
-//                        rotate();
                         }
                     else if(rotatedX >= rotatedMatrix[0].size()){
                         matrix=left();
                         flag_restart=1;
-//                        rotate();
                     }
                     else if(rotatedY < 0){
                         matrix=down();
                         flag_restart=1;
-//                        rotate();
                     }
                     else if(rotatedY >= rotatedMatrix.size())
                     {
@@ -248,7 +230,6 @@ public:
                             }
                         center[1]-=1;
                         flag_restart=1;
-//                        rotate();
                     }
                     else {
                         if(matrix[rotatedY][rotatedX]!=1)
